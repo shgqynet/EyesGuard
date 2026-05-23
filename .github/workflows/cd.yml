@@ -1,4 +1,4 @@
-# EyesGuard CD - MSBuild for .NET Framework
+# EyesGuard CD - Use vswhere to find MSBuild
 name: EyesGuard CD
 
 on:
@@ -14,21 +14,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
-    - name: Find MSBuild
-      run: |
-        Get-ChildItem -Path "C:\Program Files\Microsoft Visual Studio" -Recurse -Filter "MSBuild.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+    - name: Find Visual Studio
+      uses: actions/download-artifact@v3
     
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      
     - name: Build with MSBuild
-      run: |
-        & "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build
-    
-    - name: Find exe files
-      run: Get-ChildItem -Path . -Recurse -Filter "*.exe" | Select-Object -ExpandProperty FullName
+      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build /v:minimal
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: EyesGuard-x64
-        path: |
-          Source/EyesGuard/bin/x64/Release/*.exe
+        path: Source/EyesGuard/bin/x64/Release/*.exe
         retention-days: 5

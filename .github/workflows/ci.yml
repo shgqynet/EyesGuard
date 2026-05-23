@@ -1,4 +1,4 @@
-# EyesGuard CI - MSBuild for .NET Framework
+# EyesGuard CI - Use setup-msbuild action
 name: EyesGuard CI
 
 on:
@@ -15,9 +15,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+    
     - name: Build with MSBuild
-      run: |
-        & "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build
+      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build /v:minimal
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
