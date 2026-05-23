@@ -1,4 +1,4 @@
-# EyesGuard CI - Simple dotnet build
+# EyesGuard CI - MSBuild for .NET Framework
 name: EyesGuard CI
 
 on:
@@ -15,17 +15,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
-    - name: Install .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '6.0.x'
-    
-    - name: Build
-      run: dotnet build EyesGuard.sln -c Release -r win-x64 --self-contained false
+    - name: Build with MSBuild
+      run: |
+        & "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: EyesGuard-Release
-        path: Source/EyesGuard/bin/Release/net6.0-windows/win-x64
+        path: Source/EyesGuard/bin/x64/Release/*.exe
         retention-days: 5
