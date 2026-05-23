@@ -1,4 +1,4 @@
-# EyesGuard CI - Simplified build
+# EyesGuard CI - Simple dotnet build
 name: EyesGuard CI
 
 on:
@@ -20,18 +20,12 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
-    
-    - name: Restore packages
-      run: msbuild EyesGuard.sln /t:Restore /p:Configuration=Release
-    
-    - name: Build Release
-      run: msbuild EyesGuard.sln /p:Configuration=Release /p:Platform=x64
+    - name: Build
+      run: dotnet build EyesGuard.sln -c Release -r win-x64 --self-contained false
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: EyesGuard-Release
-        path: Source/EyesGuard/bin/x64/Release
+        path: Source/EyesGuard/bin/Release/net6.0-windows/win-x64
         retention-days: 5
