@@ -17,22 +17,7 @@
         IconSource="{Binding Source}" FlowDirection="{lang:LocalizedFlowDirection}"
         TrayMouseDoubleClick="TaskbarIcon_TrayMouseDoubleClick"
         Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IconSource, Converter={StaticResource IconSourceVisbilityConverter}}">
-        <nf:TaskbarIcon.TrayToolTip>
-            <ToolTip>
-                <StackPanel>
-                    <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Shield" Height="10" />
-                        <TextBlock FontWeight="Bold" Margin="5 0" Text="{Binding TooltipTitle}"/>
-                    </StackPanel>
-                    <TextBlock Visibility="{Binding PausedVisibility}"
-                               Text="{Binding PauseRemainingFullText}" />
-                    <TextBlock>
-                    <TextBlock Text="{Binding NextShortBreakFullText}" /><LineBreak/>
-                    <TextBlock Text="{Binding NextLongBreakFullText}" />
-                    </TextBlock>
-                </StackPanel>
-            </ToolTip>
-        </nf:TaskbarIcon.TrayToolTip>
+        <!-- TrayToolTip removed per user request -->
         <nf:TaskbarIcon.ContextMenu>
             <ContextMenu FlowDirection="{lang:LocalizedFlowDirection}" FontFamily="{DynamicResource HastiUI.Fonts.AppFont}">
 
