@@ -1,4 +1,4 @@
-# EyesGuard CI - Use setup-msbuild action
+# EyesGuard CI - Simple build
 name: EyesGuard CI
 
 on:
@@ -18,8 +18,11 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
     
-    - name: Build with MSBuild
-      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build /v:minimal
+    - name: Restore NuGet
+      run: nuget restore EyesGuard.sln
+    
+    - name: Build
+      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4

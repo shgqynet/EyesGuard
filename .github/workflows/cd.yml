@@ -1,4 +1,4 @@
-# EyesGuard CD - Use vswhere to find MSBuild
+# EyesGuard CD - Simple build
 name: EyesGuard CD
 
 on:
@@ -14,14 +14,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
-    - name: Find Visual Studio
-      uses: actions/download-artifact@v3
-    
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
-      
-    - name: Build with MSBuild
-      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64 /t:Build /v:minimal
+    
+    - name: Restore NuGet packages
+      run: nuget restore EyesGuard.sln
+    
+    - name: Build
+      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
