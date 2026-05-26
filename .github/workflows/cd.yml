@@ -1,4 +1,4 @@
-# EyesGuard CD - Simple build
+# EyesGuard CD - Build and Release
 name: EyesGuard CD
 
 on:
@@ -6,26 +6,37 @@ on:
     tags:
       - '*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
-    
+
     - name: Restore NuGet packages
       run: nuget restore EyesGuard.sln
-    
+
     - name: Build
       run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64
-    
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: EyesGuard-x64
         path: Source/EyesGuard/bin/x64/Release/*.exe
         retention-days: 5
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: EyesGuard ${{ github.ref_name }}
+        generate_release_notes: true
+        files: Source/EyesGuard/bin/x64/Release/*.exe
