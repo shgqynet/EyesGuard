@@ -28,11 +28,11 @@ jobs:
       run: nuget restore EyesGuard.sln
     
     - name: Build
-      run: MSBuild.exe EyesGuard.sln /p:Configuration=Release /p:Platform=x64
-    
+      run: MSBuild.exe Source/EyesGuard/EyesGuard.csproj /p:Configuration=Release
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: EyesGuard-Release
-        path: Source/EyesGuard/bin/x64/Release/*.exe
+        path: Source/EyesGuard/bin/Release/*.exe
         retention-days: 5
